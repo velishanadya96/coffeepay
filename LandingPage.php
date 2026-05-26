@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CoffeePay</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #09020f;
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: -100px; right: -80px;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 60% 40%, #2b1055 0%, #120524 30%, transparent 70%);
+      opacity: 0.9;
+      pointer-events: none; z-index: 0;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -120px; right: 80px;
+      width: 380px; height: 380px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #6a1b9a 0%, transparent 65%);
+      opacity: 0.35;
+      pointer-events: none; z-index: 0;
+    }
+
+    .wrapper {
+      position: relative; z-index: 1;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+    }
+
+    /* NAVBAR */
+    nav {
+      display: flex; justify-content: flex-end;
+      align-items: center; gap: 12px; padding: 20px 48px;
+    }
+
+    .btn-signup {
+      background: transparent; border: none;
+      color: #a594bd;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px; font-weight: 500;
+      letter-spacing: 0.04em; cursor: pointer;
+      padding: 8px 18px; border-radius: 999px;
+      transition: color 0.2s;
+    }
+    .btn-signup:hover { color: #b388ff; }
+
+    .btn-login {
+      background: #5e17eb; border: none;
+      color: #fff; font-family: 'Inter', sans-serif;
+      font-size: 14px; font-weight: 600;
+      letter-spacing: 0.06em; cursor: pointer;
+      padding: 9px 26px; border-radius: 999px;
+      box-shadow: 0 0 20px rgba(94,23,235,0.5);
+      transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+    }
+    .btn-login:hover {
+      background: #4a12c0;
+      box-shadow: 0 0 32px rgba(94,23,235,0.75);
+      transform: translateY(-1px);
+    }
+
+    /* HERO */
+    .hero {
+      flex: 1; display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 20px 48px 80px; gap: 0;
+    }
+
+    .hero-left { display: flex; flex-direction: column; gap: 0; }
+
+    .welcome {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(80px, 11vw, 130px);
+      line-height: 0.9; letter-spacing: 0.03em;
+      color: #ffffff;
+      text-shadow: 0 0 40px rgba(94,23,235,0.3);
+      margin-bottom: 14px;
+    }
+
+    .brand-row {
+      display: flex; align-items: center;
+      gap: 10px; margin-bottom: 16px;
+    }
+
+    .icon-slot {
+      width: clamp(52px, 7vw, 72px);
+      height: clamp(52px, 7vw, 72px);
+      overflow: hidden; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: transparent;
+    }
+    .icon-slot img { width: 100%; height: 100%; object-fit: contain; }
+
+    .brand-name {
+      font-size: clamp(30px, 4.5vw, 52px);
+      font-weight: 700; color: #ffffff;
+      letter-spacing: -0.02em; line-height: 1;
+    }
+    .brand-name .brand-c {
+      font-family: 'Playfair Display', serif;
+      font-style: italic; font-size: 1.1em;
+    }
+
+    .tagline {
+      font-size: clamp(12px, 1.4vw, 15px);
+      font-weight: 400; color: #b388ff;
+      line-height: 1.55; text-align: center; max-width: 280px;
+    }
+
+    .hero-right {
+      position: relative;
+      height: clamp(280px, 44vw, 460px);
+      display: flex; align-items: flex-end; justify-content: center;
+    }
+    .hero-right::before {
+      content: ''; position: absolute;
+      bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 80%; height: 50%; border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(94,23,235,0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .img-slot {
+      position: absolute;
+      display: flex; align-items: center; justify-content: center;
+      background: transparent;
+    }
+    .img-slot img { width: 100%; height: 100%; object-fit: contain; }
+
+    .slot-cup-left {
+      width: clamp(140px, 22vw, 240px); height: clamp(150px, 24vw, 260px);
+      bottom: 0; left: 0%; z-index: 2; border-radius: 50%;
+    }
+    .slot-cup-right {
+      width: clamp(110px, 18vw, 200px); height: clamp(130px, 20vw, 220px);
+      bottom: 0; right: 4%; z-index: 1; border-radius: 50%;
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .hero { grid-template-columns: 1fr; padding: 0 24px 60px; gap: 32px; }
+      .hero-left { order: 2; align-items: center; text-align: center; }
+      .tagline { max-width: 100%; }
+      .hero-right { order: 1; height: clamp(200px, 55vw, 300px); width: 100%; }
+      .slot-cup-left { left: 5%; width: clamp(110px, 30vw, 180px); height: clamp(120px, 32vw, 196px); }
+      .slot-cup-right { right: 5%; width: clamp(90px, 24vw, 160px); height: clamp(100px, 26vw, 174px); }
+    }
+    @media (max-width: 420px) {
+      nav { padding: 12px 16px; gap: 8px; }
+      .btn-signup { font-size: 13px; padding: 7px 12px; }
+      .btn-login { font-size: 13px; padding: 7px 18px; }
+      .hero { padding: 0 16px 48px; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+  <nav>
+    <button class="btn-signup" onclick="window.location.href='Register.php'">SIGN UP</button>
+    <button class="btn-login" onclick="window.location.href='Login.php'">LOGIN</button>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-left">
+      <div class="welcome">WELCOME.</div>
+      <div class="brand-row">
+        <div class="icon-slot">
+          <img src="coffe.png" alt="logo">
+        </div>
+        <div class="brand-name">
+          <span class="brand-c">C</span>offeePay
+        </div>
+      </div>
+      <p class="tagline">Kelola CoffeeShop dengan Lebih<br/>Mudah dan Modern</p>
+    </div>
+    <div class="hero-right">
+      <div class="img-slot">
+        <img src="coffcroissant.png" alt="produk">
+      </div>
+    </div>
+  </section>
+</div>
+</body>
+</html>
