@@ -132,7 +132,7 @@
       <div class="brand-name"><span class="brand-c">C</span>offeePay</div>
     </div>
 
-    <form class="form-card" action="register_proses.php" method="POST">
+    <form class="form-card" action="/api/register_proses.php" method="POST">
       
       <div class="input-wrap">
         <span class="input-icon">
