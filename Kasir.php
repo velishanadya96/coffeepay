@@ -205,28 +205,96 @@ $kasir_name  = htmlspecialchars($_SESSION['username'] ?? 'Kasir');
     .btn-bayar:hover:not(:disabled) { background: #4a12c0; box-shadow: 0 0 20px rgba(94,23,235,0.4); }
     .btn-bayar:disabled { opacity: 0.3; cursor: not-allowed; }
 
-    /* MODAL SUKSES */
+    /* MODAL NOTA */
     .modal-overlay {
       display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.75); z-index: 100;
+      background: rgba(0,0,0,0.82); z-index: 100;
       align-items: center; justify-content: center;
+      padding: 16px;
     }
     .modal-overlay.show { display: flex; }
-    .modal-box {
-      background: #1a0d2e; border: 1px solid rgba(94,23,235,0.4);
-      border-radius: 20px; padding: 36px 32px; max-width: 340px; width: 90%;
-      text-align: center; display: flex; flex-direction: column; gap: 14px;
+
+    /* Struk wrapper */
+    .struk-wrap {
+      display: flex; flex-direction: column; align-items: center;
+      max-height: 92vh; overflow-y: auto;
     }
-    .modal-icon { font-size: 48px; }
-    .modal-title { font-size: 20px; font-weight: 700; }
-    .modal-sub { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
-    .modal-kembalian { font-size: 22px; font-weight: 700; color: var(--green); }
-    .modal-kode { font-size: 11px; color: var(--purple-light); letter-spacing: 0.08em; }
-    .btn-modal-ok {
-      background: var(--purple-btn); border: none; color: #fff;
-      padding: 12px; border-radius: 12px; font-size: 14px; font-weight: 700;
-      cursor: pointer; width: 100%; margin-top: 6px;
+    .struk-wrap::-webkit-scrollbar { width: 0; }
+
+    /* Struk kertas */
+    .struk {
+      background: #ffffff; color: #1a1a1a;
+      width: 320px; padding: 28px 24px 20px;
+      font-family: 'Courier New', Courier, monospace;
+      position: relative;
     }
+    /* Gigi atas */
+    .struk::before {
+      content: '';
+      position: absolute; top: -12px; left: 0; right: 0; height: 14px;
+      background: radial-gradient(circle at 10px -1px, transparent 12px, #fff 12px) repeat-x;
+      background-size: 20px 14px;
+    }
+    /* Gigi bawah */
+    .struk::after {
+      content: '';
+      position: absolute; bottom: -12px; left: 0; right: 0; height: 14px;
+      background: radial-gradient(circle at 10px 15px, transparent 12px, #fff 12px) repeat-x;
+      background-size: 20px 14px;
+    }
+
+    .struk-header { text-align: center; margin-bottom: 14px; }
+    .struk-logo { font-size: 22px; font-weight: 900; letter-spacing: -0.04em; color: #1a1a1a; font-family: 'Inter', sans-serif; }
+    .struk-logo span { font-family: 'Playfair Display', serif; font-style: italic; }
+    .struk-tagline { font-size: 10px; color: #888; margin-top: 2px; }
+    .struk-divider { border: none; border-top: 1px dashed #bbb; margin: 10px 0; }
+    .struk-info { font-size: 10px; color: #555; display: flex; justify-content: space-between; margin-bottom: 2px; }
+    .struk-kode { font-size: 11px; font-weight: 700; color: #1a1a1a; text-align: center; margin: 6px 0 10px; letter-spacing: 0.06em; }
+
+    /* Item list */
+    .struk-items { margin-bottom: 6px; }
+    .struk-item { display: flex; justify-content: space-between; align-items: flex-start; font-size: 11px; padding: 4px 0; gap: 8px; }
+    .struk-item-left { flex: 1; }
+    .struk-item-name { font-weight: 700; color: #1a1a1a; }
+    .struk-item-qty  { color: #666; font-size: 10px; }
+    .struk-item-price { font-weight: 700; white-space: nowrap; }
+
+    /* Ringkasan */
+    .struk-sum { font-size: 11px; }
+    .struk-sum-row { display: flex; justify-content: space-between; padding: 2px 0; color: #555; }
+    .struk-sum-row.total {
+      font-size: 14px; font-weight: 900; color: #1a1a1a;
+      padding: 8px 0 6px; border-top: 1px solid #ccc; margin-top: 6px;
+    }
+    .struk-sum-row.kembalian { font-weight: 700; color: #1a7a4a; }
+
+    /* Metode badge */
+    .struk-metode {
+      text-align: center; margin: 10px 0 4px;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+      color: #5e17eb;
+    }
+    .struk-footer { text-align: center; font-size: 9px; color: #aaa; margin-top: 10px; line-height: 1.6; }
+    .struk-thanks { font-size: 13px; font-weight: 700; color: #1a1a1a; text-align: center; margin: 10px 0 4px; }
+
+    /* Tombol bawah struk */
+    .struk-actions {
+      display: flex; gap: 10px; margin-top: 20px; width: 320px;
+    }
+    .btn-struk {
+      flex: 1; padding: 12px; border-radius: 12px;
+      font-size: 13px; font-weight: 700; cursor: pointer;
+      border: none; transition: all 0.2s; font-family: 'Inter', sans-serif;
+    }
+    .btn-struk-print {
+      background: #ffffff; color: #1a1a1a;
+      border: 1.5px solid #ddd;
+    }
+    .btn-struk-print:hover { background: #f0f0f0; }
+    .btn-struk-new {
+      background: var(--purple-btn); color: #fff;
+    }
+    .btn-struk-new:hover { background: #4a12c0; }
 
     @media (max-width: 1024px) { .produk-grid { grid-template-columns: repeat(2,1fr); } }
     @media (max-width: 768px) {
@@ -238,15 +306,39 @@ $kasir_name  = htmlspecialchars($_SESSION['username'] ?? 'Kasir');
 </head>
 <body>
 
-  <!-- MODAL SUKSES -->
+  <!-- MODAL NOTA / STRUK -->
   <div class="modal-overlay" id="modalSukses">
-    <div class="modal-box">
-      <div class="modal-icon">✅</div>
-      <div class="modal-title">Pembayaran Berhasil!</div>
-      <div class="modal-kode" id="modalKode"></div>
-      <div class="modal-sub" id="modalDetail"></div>
-      <div class="modal-kembalian" id="modalKembalian"></div>
-      <button class="btn-modal-ok" onclick="tutupModal()">Transaksi Baru</button>
+    <div class="struk-wrap">
+      <!-- STRUK KERTAS -->
+      <div class="struk" id="strukBox">
+        <div class="struk-header">
+          <div class="struk-logo"><span>C</span>offeePay</div>
+          <div class="struk-tagline">Kelola CoffeeShop dengan Lebih Mudah</div>
+        </div>
+        <hr class="struk-divider">
+        <div class="struk-info"><span id="sKasir"></span><span id="sWaktu"></span></div>
+        <div class="struk-kode" id="sKode"></div>
+        <hr class="struk-divider">
+        <div class="struk-items" id="sItems"></div>
+        <hr class="struk-divider">
+        <div class="struk-sum">
+          <div class="struk-sum-row"><span>Subtotal</span><span id="sSubtotal"></span></div>
+          <div class="struk-sum-row"><span>Pajak (10%)</span><span id="sPajak"></span></div>
+          <div class="struk-sum-row total"><span>TOTAL</span><span id="sTotal"></span></div>
+          <div class="struk-sum-row" id="uangRow"><span>Uang Diberikan</span><span id="sUang"></span></div>
+          <div class="struk-sum-row kembalian" id="kembalianRow"><span>Kembalian</span><span id="sKembalian"></span></div>
+        </div>
+        <div class="struk-metode" id="sMetode"></div>
+        <hr class="struk-divider">
+        <div class="struk-thanks">Terima Kasih! ☕</div>
+        <div class="struk-footer">Simpan struk ini sebagai bukti pembayaran<br>CoffeePay &copy; 2026</div>
+      </div>
+
+      <!-- TOMBOL AKSI -->
+      <div class="struk-actions">
+        <button class="btn-struk btn-struk-print" onclick="cetakStruk()">🖨️ Cetak</button>
+        <button class="btn-struk btn-struk-new" onclick="tutupModal()">Transaksi Baru</button>
+      </div>
     </div>
   </div>
 
@@ -501,7 +593,7 @@ $kasir_name  = htmlspecialchars($_SESSION['username'] ?? 'Kasir');
         });
         const data = await res.json();
         if (data.success) {
-          tampilModal(data.kode, total, payload.kembalian, metodeAktif);
+          tampilModal(data.kode, payload);
         } else {
           alert('Gagal: ' + (data.message || 'Terjadi kesalahan'));
           document.getElementById('btnBayar').disabled = false;
@@ -514,13 +606,63 @@ $kasir_name  = htmlspecialchars($_SESSION['username'] ?? 'Kasir');
       }
     }
 
-    function tampilModal(kode, total, kembalian, metode) {
-      document.getElementById('modalKode').textContent   = kode;
-      document.getElementById('modalDetail').textContent =
-        'Total Rp ' + total.toLocaleString('id-ID') + ' via ' + metode.toUpperCase();
-      document.getElementById('modalKembalian').textContent =
-        metode === 'tunai' ? 'Kembalian: Rp ' + kembalian.toLocaleString('id-ID') : '✓ Pembayaran QRIS';
+    function tampilModal(kode, payload) {
+      const fmt = n => 'Rp ' + parseInt(n).toLocaleString('id-ID');
+      const now  = new Date();
+      const tgl  = now.toLocaleDateString('id-ID', { day:'2-digit', month:'short', year:'numeric' });
+      const jam  = now.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' });
+
+      document.getElementById('sKode').textContent   = kode;
+      document.getElementById('sKasir').textContent  = '👤 ' + KASIR_NAME;
+      document.getElementById('sWaktu').textContent  = tgl + ' ' + jam;
+      document.getElementById('sSubtotal').textContent = fmt(payload.subtotal);
+      document.getElementById('sPajak').textContent    = fmt(payload.pajak);
+      document.getElementById('sTotal').textContent    = fmt(payload.total);
+      document.getElementById('sMetode').textContent   = '— ' + payload.metode.toUpperCase() + ' —';
+
+      // Item list
+      const itemsEl = document.getElementById('sItems');
+      itemsEl.innerHTML = '';
+      payload.pesanan.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'struk-item';
+        div.innerHTML = `
+          <div class="struk-item-left">
+            <div class="struk-item-name">${p.nama_produk}</div>
+            <div class="struk-item-qty">${p.qty} x ${fmt(p.harga)}</div>
+          </div>
+          <div class="struk-item-price">${fmt(p.harga * p.qty)}</div>`;
+        itemsEl.appendChild(div);
+      });
+
+      // Tunai / QRIS
+      if (payload.metode === 'qris') {
+        document.getElementById('uangRow').style.display      = 'none';
+        document.getElementById('kembalianRow').style.display = 'none';
+      } else {
+        document.getElementById('uangRow').style.display      = 'flex';
+        document.getElementById('kembalianRow').style.display = 'flex';
+        document.getElementById('sUang').textContent      = fmt(payload.uang_diberikan);
+        document.getElementById('sKembalian').textContent = fmt(payload.kembalian);
+      }
+
       document.getElementById('modalSukses').classList.add('show');
+    }
+
+    function cetakStruk() {
+      const struk   = document.getElementById('strukBox');
+      const printWin = window.open('', '_blank', 'width=400,height=650');
+      printWin.document.write(`
+        <html><head><title>Struk CoffeePay</title>
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400&family=Inter:wght@700&display=swap" rel="stylesheet">
+        <style>
+          body { margin: 0; background: #fff; display: flex; justify-content: center; padding: 20px; }
+          * { box-sizing: border-box; }
+        </style>
+        </head><body>${struk.outerHTML}</body></html>`);
+      printWin.document.close();
+      printWin.focus();
+      setTimeout(() => { printWin.print(); printWin.close(); }, 500);
     }
 
     function tutupModal() {
@@ -531,6 +673,7 @@ $kasir_name  = htmlspecialchars($_SESSION['username'] ?? 'Kasir');
       document.getElementById('inputUang').value    = '';
       renderPesanan();
       document.getElementById('btnBayar').textContent = 'BAYAR';
+      document.getElementById('btnBayar').disabled = true;
     }
 
     document.getElementById('btnClear').addEventListener('click', () => {
