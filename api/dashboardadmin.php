@@ -1,14 +1,14 @@
 <?php
-session_start(); // Wajib untuk membaca data $_SESSION
+session_start();
 include 'koneksi.php';
 
-// PERBAIKAN 1: Gunakan $_SESSION untuk mengecek login, bukan $_COOKIE
+// Proteksi: hanya admin yang boleh akses
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-    header("Location: Login.php"); // Hapus /api/
+    header("Location: Login.php");
     exit;
 }
 
-// PERBAIKAN 2: Ambil data produk dari database agar variabel $produk_list tidak error/kosong
+// Ambil semua produk dari database
 $produk_list = mysqli_query($koneksi, "SELECT * FROM produk ORDER BY id DESC");
 ?>
 <!DOCTYPE html>
@@ -49,7 +49,7 @@ $produk_list = mysqli_query($koneksi, "SELECT * FROM produk ORDER BY id DESC");
       height: 100vh;
     }
 
-    /* ─── SIDEBAR ─── */
+    /* ─── SIDEBAR (SAMA PERSIS DENGAN KASIR) ─── */
     .sidebar {
       width: 240px;
       flex-shrink: 0;
@@ -94,6 +94,7 @@ $produk_list = mysqli_query($koneksi, "SELECT * FROM produk ORDER BY id DESC");
     .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; opacity: 0.7; }
     .nav-item.active svg { opacity: 1; color: var(--purple-light); }
     
+    /* Tombol Khususs Akses Antarmuka Kasir Diubah Agar Serasi */
     .kasir-link-wrap {
       padding: 0 24px;
       margin: 15px 0;
@@ -120,6 +121,7 @@ $produk_list = mysqli_query($koneksi, "SELECT * FROM produk ORDER BY id DESC");
 
     .sidebar-bottom { margin-top: auto; }
 
+    /* Mobile sidebar overlay */
     .sidebar-overlay {
       display: none; position: fixed; inset: 0;
       background: rgba(0,0,0,0.6); z-index: 9;
@@ -164,6 +166,7 @@ $produk_list = mysqli_query($koneksi, "SELECT * FROM produk ORDER BY id DESC");
     .content-body::-webkit-scrollbar { width: 6px; }
     .content-body::-webkit-scrollbar-thumb { background: rgba(147,51,234,0.3); border-radius: 4px; }
 
+    /* Atas: Form Input & Header Kanan */
     .admin-grid-top {
       display: grid;
       grid-template-columns: 420px 1fr;
@@ -171,6 +174,7 @@ $produk_list = mysqli_query($koneksi, "SELECT * FROM produk ORDER BY id DESC");
       align-items: start;
     }
 
+    /* ─── CONTAINER FORM INPUT ─── */
     .form-container {
       background: var(--panel-bg);
       border: 1px solid var(--border);
@@ -181,6 +185,7 @@ $produk_list = mysqli_query($koneksi, "SELECT * FROM produk ORDER BY id DESC");
       position: relative;
     }
 
+    /* Upload Foto Box */
     .photo-upload-box {
       width: 120px;
       height: 120px;
@@ -226,6 +231,7 @@ $produk_list = mysqli_query($koneksi, "SELECT * FROM produk ORDER BY id DESC");
       cursor: pointer;
     }
 
+    /* Inputs Wrapper Kanan */
     .form-inputs {
       flex: 1;
       display: flex;
@@ -237,6 +243,7 @@ $produk_list = mysqli_query($koneksi, "SELECT * FROM produk ORDER BY id DESC");
       flex-direction: column;
     }
     
+    /* Input Field Oval Kapsul Sesuai Kasir */
     .form-control {
       width: 100%;
       background: rgba(255,255,255,0.03);
@@ -268,6 +275,7 @@ $produk_list = mysqli_query($koneksi, "SELECT * FROM produk ORDER BY id DESC");
       color: var(--text);
     }
 
+    /* Tombol Aksi Tambah Produk */
     .btn-submit-container {
       margin-top: 2px;
       display: flex;
@@ -291,12 +299,27 @@ $produk_list = mysqli_query($koneksi, "SELECT * FROM produk ORDER BY id DESC");
       background: #6d28d9;
       transform: translateY(-1px);
     }
-    .btn-submit svg { width: 14px; height: 14px; }
+    .btn-submit svg {
+      width: 14px;
+      height: 14px;
+    }
 
-    .display-header-panel { padding-top: 4px; }
-    .panel-title { font-size: 20px; font-weight: 600; color: var(--text); margin-bottom: 14px; }
-    .search-wrapper { position: relative; max-width: 300px; }
+    /* ─── KANAN: PANEL PRODUK TERSEDIA ─── */
+    .display-header-panel {
+      padding-top: 4px;
+    }
+    .panel-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+    .search-wrapper {
+      position: relative;
+      max-width: 300px;
+    }
     
+    /* Input Cari Oval Kapsul */
     .search-input {
       width: 100%;
       background: rgba(255,255,255,0.03);
@@ -309,36 +332,80 @@ $produk_list = mysqli_query($koneksi, "SELECT * FROM produk ORDER BY id DESC");
       outline: none;
       transition: border-color 0.2s;
     }
-    .search-input:focus { border-color: var(--purple-light); }
-    .search-input::placeholder { color: rgba(255, 255, 255, 0.25); }
+    .search-input:focus {
+      border-color: var(--purple-light);
+    }
+    .search-input::placeholder {
+      color: rgba(255, 255, 255, 0.25);
+    }
     .search-wrapper svg {
-      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
-      width: 16px; height: 16px; color: var(--text-dim); opacity: 0.6; pointer-events: none;
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      color: var(--text-dim);
+      opacity: 0.6;
+      pointer-events: none;
     }
 
-    .section-divider { border: none; border-top: 1px solid var(--border); }
+    /* Garis pembatas horizontal */
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+    }
 
+    /* ─── EMPTY STATE VIEW ─── */
     .empty-state-view {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 80px 20px; color: var(--text-dim); opacity: 0.4; text-align: center; gap: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 20px;
+      color: var(--text-dim);
+      opacity: 0.4;
+      text-align: center;
+      gap: 10px;
     }
-    .empty-state-view svg { width: 48px; height: 48px; }
-    .empty-state-view p { font-size: 13px; letter-spacing: 0.02em; }
+    .empty-state-view svg {
+      width: 48px;
+      height: 48px;
+    }
+    .empty-state-view p {
+      font-size: 13px;
+      letter-spacing: 0.02em;
+    }
 
+    /* ─── RESPONSIVE ─── */
     @media (max-width: 992px) {
-      .admin-grid-top { grid-template-columns: 1fr; gap: 20px; }
-      .search-wrapper { max-width: 100%; }
+      .admin-grid-top {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .search-wrapper {
+        max-width: 100%;
+      }
     }
 
     @media (max-width: 768px) {
-      .sidebar { position: fixed; left: 0; top: 0; bottom: 0; transform: translateX(-100%); z-index: 20; }
+      .sidebar {
+        position: fixed; left: 0; top: 0; bottom: 0;
+        transform: translateX(-100%); z-index: 20;
+      }
       .sidebar.open { transform: translateX(0); }
       .btn-menu { display: flex; }
       .topbar h1 { font-size: 28px; }
       .topbar { padding: 20px 20px 10px; }
       .content-body { padding: 0 20px 20px; }
-      .form-container { flex-direction: column; align-items: center; }
-      .photo-upload-box { width: 100%; height: 140px; }
+      .form-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      .photo-upload-box {
+        width: 100%;
+        height: 140px;
+      }
     }
   </style>
 </head>
@@ -360,7 +427,7 @@ $produk_list = mysqli_query($koneksi, "SELECT * FROM produk ORDER BY id DESC");
         </svg>
         Produk Admin
       </a>
-      <a class="nav-item" href="laporankeuangan.php">
+      <a class="nav-item" href="/api/laporankeuangan.php">
         <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
           <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
@@ -374,7 +441,7 @@ $produk_list = mysqli_query($koneksi, "SELECT * FROM produk ORDER BY id DESC");
     </div>
 
     <div class="sidebar-bottom">
-      <a class="nav-item" href="logout.php">
+      <a class="nav-item" href="/api/logout.php">
         <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>
         </svg>
@@ -384,6 +451,7 @@ $produk_list = mysqli_query($koneksi, "SELECT * FROM produk ORDER BY id DESC");
   </aside>
 
   <div class="main">
+    
     <div class="topbar">
       <button class="btn-menu" onclick="bukaSidebar()">
         <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -392,7 +460,9 @@ $produk_list = mysqli_query($koneksi, "SELECT * FROM produk ORDER BY id DESC");
     </div>
 
     <div class="content-body">
+      
       <div class="admin-grid-top">
+        
         <form class="form-container" id="formProduk" action="produk_proses.php" method="POST" enctype="multipart/form-data">
           <div class="photo-upload-box">
             <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -440,6 +510,7 @@ $produk_list = mysqli_query($koneksi, "SELECT * FROM produk ORDER BY id DESC");
             </svg>
           </div>
         </div>
+
       </div>
 
       <hr class="section-divider">
@@ -469,7 +540,7 @@ $produk_list = mysqli_query($koneksi, "SELECT * FROM produk ORDER BY id DESC");
             <div style="font-size: 12px; color: var(--text-dim);">Rp <?= number_format($p['harga'], 0, ',', '.') ?></div>
             <div style="font-size: 10px; color: var(--purple-light); margin-top: 2px; text-transform: uppercase;"><?= htmlspecialchars($p['kategori']) ?></div>
           </div>
-          <a href="produk_proses.php?hapus=<?= $p['id'] ?>" onclick="return confirm('Hapus produk ini?')" style="display:block; text-align:center; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #ef4444; padding: 6px; border-radius: 8px; font-size: 11px; font-weight: 600; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(239,68,68,0.25)'" onmouseout="this.style.background='rgba(239,68,68,0.1)'">Hapus</a>
+          <a href="/api/produk_proses.php?hapus=<?= $p['id'] ?>" onclick="return confirm('Hapus produk ini?')" style="display:block; text-align:center; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #ef4444; padding: 6px; border-radius: 8px; font-size: 11px; font-weight: 600; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(239,68,68,0.25)'" onmouseout="this.style.background='rgba(239,68,68,0.1)'">Hapus</a>
         </div>
         <?php endwhile; ?>
       </div>
