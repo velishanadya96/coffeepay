@@ -1,9 +1,10 @@
 <?php
+session_start();
 include 'koneksi.php';
 
-if (!isset($_COOKIE['role']) || $_COOKIE['role'] !== 'admin') {
-    header('Content-Type: application/json');
-    echo json_encode(["success" => false, "message" => "Unauthorized"]);
+if (!isset($_SESSION['role'])) {
+    http_response_code(401);
+    echo json_encode(['success' => false, 'message' => 'Unauthorized']);
     exit;
 }
 
