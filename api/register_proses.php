@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $query = "INSERT INTO users (username, email, password, role) VALUES ('$username', '$email', '$password_hashed', '$role')";
     
     if (mysqli_query($koneksi, $query)) {
-        echo "<script>alert('Registrasi Berhasil sebagai " . ucfirst($role) . "!'); window.location.href='Login.php';</script>";
+        echo "<script>alert('Registrasi Berhasil sebagai " . ucfirst($role) . "!'); window.location.href='/api/Login.php';</script>";
     } else {
         echo "<script>alert('Gagal mendaftar, coba lagi.'); window.history.back();</script>";
     }

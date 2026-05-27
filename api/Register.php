@@ -157,7 +157,7 @@
 
       <button type="submit" class="btn-submit">Sign Up</button>
       <p class="signup-hint">
-        Sudah memiliki akun? <a href="Login.php">Login di sini</a>
+        Sudah memiliki akun? <a href="/api/Login.php">Login di sini</a>
       </p>
     </form>
   </div>
