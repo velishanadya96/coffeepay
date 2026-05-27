@@ -683,4 +683,4 @@ $kasir_name  = htmlspecialchars($_SESSION['username'] ?? 'Kasir');
     renderProduk();
   </script>
 </body>
-</html>
+</html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
