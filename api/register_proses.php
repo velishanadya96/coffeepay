@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // OTOMATIS COCOKKAN DOMAIN EMAIL UNTUK JADI ADMIN
     $role = 'kasir';
-    if (str_ends_with(strtolower($email), '@admincoffeepay.com')) {
+    if (substr(strtolower($email), -19) === '@admincoffeepay.com') {
         $role = 'admin';
     }
 
