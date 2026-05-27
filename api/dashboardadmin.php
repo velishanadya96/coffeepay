@@ -437,7 +437,7 @@ $produk_list = mysqli_query($koneksi, $query);
     </nav>
     
     <div class="kasir-link-wrap">
-      <a href="Kasir.php" class="btn-kasir-link">LIHAT DASHBOARD KASIR</a>
+      <a href="/api/Kasir.php" class="btn-kasir-link">LIHAT DASHBOARD KASIR</a>
     </div>
 
     <div class="sidebar-bottom">
@@ -463,7 +463,7 @@ $produk_list = mysqli_query($koneksi, $query);
       
       <div class="admin-grid-top">
         
-        <form class="form-container" id="formProduk" action="produk_proses.php" method="POST" enctype="multipart/form-data">
+        <form class="form-container" id="formProduk" action="/api/produk_proses.php" method="POST" enctype="multipart/form-data">
           <div class="photo-upload-box">
             <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
               <rect x="3" y="3" width="18" height="18" rx="3"/>
