@@ -347,13 +347,13 @@ $kasir_name  = htmlspecialchars($_SESSION['username'] ?? 'Kasir');
       <span class="brand-text"><span class="brand-c">C</span>offeePay</span>
     </div>
     <nav>
-      <a class="nav-item active" href="Kasir.php">
+      <a class="nav-item active" href="/api/Kasir.php">
         <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z"/></svg>
         Kasir
       </a>
     </nav>
     <div class="sidebar-bottom">
-      <a class="nav-item" href="logout.php">
+      <a class="nav-item" href="/api/logout.php">
         <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
         Keluar
       </a>

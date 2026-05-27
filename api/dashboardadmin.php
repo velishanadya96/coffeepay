@@ -427,7 +427,7 @@ $produk_list = mysqli_query($koneksi, "SELECT * FROM produk ORDER BY id DESC");
         </svg>
         Produk Admin
       </a>
-      <a class="nav-item" href="laporankeuangan.php">
+      <a class="nav-item" href="/api/laporankeuangan.php">
         <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
           <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
@@ -441,7 +441,7 @@ $produk_list = mysqli_query($koneksi, "SELECT * FROM produk ORDER BY id DESC");
     </div>
 
     <div class="sidebar-bottom">
-      <a class="nav-item" href="logout.php">
+      <a class="nav-item" href="/api/logout.php">
         <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>
         </svg>
@@ -540,7 +540,7 @@ $produk_list = mysqli_query($koneksi, "SELECT * FROM produk ORDER BY id DESC");
             <div style="font-size: 12px; color: var(--text-dim);">Rp <?= number_format($p['harga'], 0, ',', '.') ?></div>
             <div style="font-size: 10px; color: var(--purple-light); margin-top: 2px; text-transform: uppercase;"><?= htmlspecialchars($p['kategori']) ?></div>
           </div>
-          <a href="produk_proses.php?hapus=<?= $p['id'] ?>" onclick="return confirm('Hapus produk ini?')" style="display:block; text-align:center; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #ef4444; padding: 6px; border-radius: 8px; font-size: 11px; font-weight: 600; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(239,68,68,0.25)'" onmouseout="this.style.background='rgba(239,68,68,0.1)'">Hapus</a>
+          <a href="/api/produk_proses.php?hapus=<?= $p['id'] ?>" onclick="return confirm('Hapus produk ini?')" style="display:block; text-align:center; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #ef4444; padding: 6px; border-radius: 8px; font-size: 11px; font-weight: 600; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(239,68,68,0.25)'" onmouseout="this.style.background='rgba(239,68,68,0.1)'">Hapus</a>
         </div>
         <?php endwhile; ?>
       </div>
