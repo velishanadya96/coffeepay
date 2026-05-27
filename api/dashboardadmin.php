@@ -1,15 +1,11 @@
 <?php
-session_start();
 include 'koneksi.php';
 
-// Proteksi: hanya admin yang boleh akses
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-    header("Location: Login.php");
+// Hanya admin yang boleh akses
+if (!isset($_COOKIE['role']) || $_COOKIE['role'] !== 'admin') {
+    header("Location: /api/Login.php");
     exit;
 }
-
-// Ambil semua produk dari database
-$produk_list = mysqli_query($koneksi, "SELECT * FROM produk ORDER BY id DESC");
 ?>
 <!DOCTYPE html>
 <html lang="id">

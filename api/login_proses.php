@@ -11,31 +11,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Cari user berdasarkan email
     $query = mysqli_query($koneksi, "SELECT * FROM users WHERE email = '$email'");
-    
+
     if (mysqli_num_rows($query) === 1) {
         $user = mysqli_fetch_assoc($query);
 
-        // Verifikasi password yang dienkripsi
         if (password_verify($password, $user['password'])) {
-            
-            // Simpan data user ke Session PHP server
-            $_SESSION['user_id']  = $user['id'];
-            $_SESSION['username'] = $user['username'];
-            $_SESSION['role']     = $user['role'];
 
-            // REDIRECT BERDASARKAN ROLE DARI PHPMYADMIN
+            // Simpan ke cookie (bukan session, karena Vercel tidak support session)
+            setcookie('user_id',   $user['id'],       time() + 3600, '/', '', true, true);
+            setcookie('username',  $user['username'],  time() + 3600, '/', '', true, true);
+            setcookie('role',      $user['role'],      time() + 3600, '/', '', true, true);
+
             if ($user['role'] === 'admin') {
-                echo "<script>alert('Selamat datang Admin " . $user['username'] . "'); window.location.href='dashboardadmin.php';</script>";
+                echo "<script>alert('Selamat datang Admin " . $user['username'] . "!'); window.location.href='/api/dashboardadmin.php';</script>";
             } else {
-                echo "<script>alert('Selamat datang Kasir " . $user['username'] . "'); window.location.href='Kasir.php';</script>";
+                echo "<script>alert('Selamat datang Kasir " . $user['username'] . "!'); window.location.href='/api/Kasir.php';</script>";
             }
             exit;
         }
     }
 
-    // Jika tidak ditemukan atau password salah
     echo "<script>alert('Email atau password salah!'); window.history.back();</script>";
 }
 ?>

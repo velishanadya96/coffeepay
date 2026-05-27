@@ -140,7 +140,7 @@
     <div class="brand">
       <div class="brand-name"><span class="brand-c">C</span>offeePay</div>
     </div>
-    <form class="form-card" action="/api/login_proses.php" method="POST">
+    <form class="form-card" action="login_proses.php" method="POST">
   
   <div class="input-wrap">
     <span class="input-icon">
@@ -170,26 +170,42 @@
     </div>
   </div>
 
-  <form class="form-card" action="login_proses.php" method="POST">
+  <script>
+    function handleLogin() {
+  const email    = document.querySelector('input[type="email"]').value.trim();
+  const password = document.querySelector('input[type="password"]').value.trim();
+
+  if (!email || !password) { 
+    alert('Email dan password harus diisi!'); 
+    return; 
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { 
+    alert('Format email tidak valid!'); 
+    return; 
+  }
+
+  const users = JSON.parse(localStorage.getItem('coffeepay_users') || '[]');
   
-  <div class="input-wrap">
-    <span class="input-icon">
-      <svg viewBox="0 0 24 24"><rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"2\"/><path d=\"M3 7l9 6 9-6\"/></svg>
-    </span>
-    <input type="email" name="email" placeholder="alamat email" required />
-  </div>
+  // Mencari user yang email dan password-nya cocok
+  const user = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
 
-  <div class="input-wrap">
-    <span class="input-icon">
-      <svg viewBox="0 0 24 24"><rect x=\"5\" y=\"11\" width=\"14\" height=\"10\" rx=\"2\"/><path d=\"M8 11V7a4 4 0 0 1 8 0v4\"/></svg>
-    </span>
-    <input type="password" name="password" placeholder="password" required />
-  </div>
+  if (!user) { 
+    alert('Email atau password salah! Belum punya akun? Silakan sign up terlebih dahulu.'); 
+    return; 
+  }
 
-  <button type="submit" class="btn-login">LOG IN</button>
+  // Menyimpan data sesi login saat ini agar bisa dibaca di halaman tujuan
+  localStorage.setItem('coffeepay_session', JSON.stringify(user));
 
-  <p class="signup-hint">
-    Belum memiliki akun? <a href="Register.php">sign up</a> </p>
-</form>
+  // REDIRECT BERDASARKAN ROLE
+  if (user.role === 'admin') {
+    alert('Login Berhasil! Selamat datang Admin ' + user.username);
+    window.location.href = '/api/dashboardadmin.php';
+  } else {
+    alert('Login Berhasil! Selamat datang Kasir ' + user.username);
+    window.location.href = '/api/Kasir.php';
+  }
+}
+  </script>
 </body>
 </html>

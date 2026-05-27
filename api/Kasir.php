@@ -1,22 +1,16 @@
+// Kasir.php — ganti bagian atas:
 <?php
-session_start();
 include 'koneksi.php';
 
-if (!isset($_SESSION['role'])) {
-    header("Location: Login.php");
+// Ganti $_SESSION ke $_COOKIE
+if (!isset($_COOKIE['role'])) {
+    header("Location: /api/Login.php");
     exit;
 }
 
-$produk_minuman = [];
-$produk_makanan = [];
-$result = mysqli_query($koneksi, "SELECT * FROM produk ORDER BY nama_produk ASC");
-while ($row = mysqli_fetch_assoc($result)) {
-    if ($row['kategori'] === 'minuman') $produk_minuman[] = $row;
-    else                                 $produk_makanan[] = $row;
-}
-$produk_json = json_encode(['minuman' => $produk_minuman, 'makanan' => $produk_makanan]);
-$kasir_name  = htmlspecialchars($_SESSION['username'] ?? 'Kasir');
+$kasir_name = htmlspecialchars($_COOKIE['username'] ?? 'Kasir');
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
