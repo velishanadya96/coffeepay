@@ -1,4 +1,3 @@
-// Kasir.php — ganti bagian atas:
 <?php
 include 'koneksi.php';
 
