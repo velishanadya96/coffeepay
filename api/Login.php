@@ -159,7 +159,7 @@
   <button type="submit" class="btn-submit">Login</button>
   
   <p class="signup-hint">
-    Belum memiliki akun? <a href="Register.php">sign up</a>
+    Belum memiliki akun? <a href="/api/Register.php">sign up</a>
   </p>
 </form>
   </div>
@@ -200,10 +200,10 @@
   // REDIRECT BERDASARKAN ROLE
   if (user.role === 'admin') {
     alert('Login Berhasil! Selamat datang Admin ' + user.username);
-    window.location.href = 'dashboardadmin.php';
+    window.location.href = '/api/dashboardadmin.php';
   } else {
     alert('Login Berhasil! Selamat datang Kasir ' + user.username);
-    window.location.href = 'Kasir.php';
+    window.location.href = '/api/Kasir.php';
   }
 }
   </script>

@@ -27,9 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // REDIRECT BERDASARKAN ROLE DARI PHPMYADMIN
             if ($user['role'] === 'admin') {
-                echo "<script>alert('Selamat datang Admin " . $user['username'] . "'); window.location.href='dashboardadmin.php';</script>";
+                echo "<script>alert('Selamat datang Admin " . $user['username'] . "'); window.location.href='/api/dashboardadmin.php';</script>";
             } else {
-                echo "<script>alert('Selamat datang Kasir " . $user['username'] . "'); window.location.href='Kasir.php';</script>";
+                echo "<script>alert('Selamat datang Kasir " . $user['username'] . "'); window.location.href='/api/Kasir.php';</script>";
             }
             exit;
         }

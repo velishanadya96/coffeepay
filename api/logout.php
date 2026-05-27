@@ -17,6 +17,6 @@ if (ini_get("session.use_cookies")) {
 session_destroy();
 
 // Alihkan pengguna kembali ke LandingPage.php
-echo "<script>alert('Anda telah berhasil logout.'); window.location.href='LandingPage.php';</script>";
+echo "<script>alert('Anda telah berhasil logout.'); window.location.href='index.html';</script>";
 exit;
 ?>
