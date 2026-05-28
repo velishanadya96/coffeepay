@@ -437,7 +437,7 @@ $produk_list = mysqli_query($koneksi, $query);
     </nav>
     
     <div class="kasir-link-wrap">
-      <a href="/api/Kasir.php" class="btn-kasir-link">LIHAT DASHBOARD KASIR</a>
+      <a href="Kasir.php" class="btn-kasir-link">LIHAT DASHBOARD KASIR</a>
     </div>
 
     <div class="sidebar-bottom">

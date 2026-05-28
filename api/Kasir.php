@@ -1,6 +1,7 @@
 <?php
 include 'koneksi.php';
 
+// Ganti $_SESSION ke $_COOKIE
 if (!isset($_COOKIE['role'])) {
     header("Location: /api/Login.php");
     exit;
@@ -8,6 +9,7 @@ if (!isset($_COOKIE['role'])) {
 
 $kasir_name = htmlspecialchars($_COOKIE['username'] ?? 'Kasir');
 
+// Ambil produk dari database
 $produk_minuman = [];
 $produk_makanan = [];
 
@@ -692,4 +694,4 @@ $produk_json = json_encode([
     renderProduk();
   </script>
 </body>
-</html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+</html>
