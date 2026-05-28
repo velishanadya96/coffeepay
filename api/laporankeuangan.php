@@ -1,9 +1,8 @@
 <?php
-session_start();
 include 'koneksi.php';
 
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-    header("Location: Login.php");
+if (!isset($_COOKIE['role']) || $_COOKIE['role'] !== 'admin') {
+    header("Location: /api/Login.php");
     exit;
 }
 
