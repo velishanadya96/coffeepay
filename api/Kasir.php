@@ -1,13 +1,29 @@
 <?php
 include 'koneksi.php';
 
-// Ganti $_SESSION ke $_COOKIE
 if (!isset($_COOKIE['role'])) {
     header("Location: /api/Login.php");
     exit;
 }
 
 $kasir_name = htmlspecialchars($_COOKIE['username'] ?? 'Kasir');
+
+$produk_minuman = [];
+$produk_makanan = [];
+
+$q = mysqli_query($koneksi, "SELECT id, nama_produk, harga, kategori, foto FROM produk ORDER BY id ASC");
+while ($row = mysqli_fetch_assoc($q)) {
+    if ($row['kategori'] === 'minuman') {
+        $produk_minuman[] = $row;
+    } else {
+        $produk_makanan[] = $row;
+    }
+}
+
+$produk_json = json_encode([
+    'minuman' => $produk_minuman,
+    'makanan' => $produk_makanan,
+]);
 ?>
 
 <!DOCTYPE html>
