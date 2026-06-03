@@ -465,7 +465,9 @@ $produk_json = json_encode([
       daftar.forEach(p => {
         const card = document.createElement('div');
         card.className = 'produk-card';
-        const fotoSrc = (p.foto && p.foto !== 'default.png') ? `uploads/${p.foto}` : null;
+        const fotoSrc = (p.foto && p.foto !== 'default.png') 
+         ? (p.foto.startsWith('http') ? p.foto : `uploads/${p.foto}`) 
+         : null;
         card.innerHTML = `
           <div class="produk-img-wrap">
             ${fotoSrc ? `<img src="${fotoSrc}" style="width:100%;height:100%;object-fit:cover;">` : `<svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`}
