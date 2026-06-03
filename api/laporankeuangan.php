@@ -24,7 +24,7 @@ $row_total = mysqli_fetch_assoc($q_total);
 $total_pemasukan  = (int)($row_total['total_pemasukan'] ?? 0);
 $jml_transaksi    = (int)($row_total['jml_transaksi']  ?? 0);
 
-$q_produk = mysqli_query($koneksi, "SELECT SUM(td.qty) as total_item FROM transaksi t JOIN transaksi_detail td ON t.id = td.transaksi_id WHERE $where");
+$q_produk = mysqli_query($koneksi, "SELECT SUM(td.qty) as total_item FROM transaksi t JOIN detail_transaksi td ON t.id = td.transaksi_id WHERE $where");
 $row_produk = mysqli_fetch_assoc($q_produk);
 $total_produk_terjual = (int)($row_produk['total_item'] ?? 0);
 
@@ -54,14 +54,14 @@ if ($filter_periode === 'hari_ini') {
 $q_recent = mysqli_query($koneksi,
     "SELECT t.*, GROUP_CONCAT(td.nama_produk, ' x', td.qty ORDER BY td.id SEPARATOR ', ') as items
      FROM transaksi t
-     LEFT JOIN transaksi_detail td ON t.id = td.transaksi_id
+     LEFT JOIN detail_transaksi td ON t.id = td.transaksi_id
      WHERE $where GROUP BY t.id ORDER BY t.created_at DESC LIMIT 5");
 
 // ── TABEL SEMUA TRANSAKSI (untuk export CSV) ───────────────
 $q_all = mysqli_query($koneksi,
     "SELECT t.*, GROUP_CONCAT(td.nama_produk, ' x', td.qty ORDER BY td.id SEPARATOR ' | ') as items
      FROM transaksi t
-     LEFT JOIN transaksi_detail td ON t.id = td.transaksi_id
+     LEFT JOIN detail_transaksi td ON t.id = td.transaksi_id
      WHERE $where GROUP BY t.id ORDER BY t.created_at DESC");
 
 // Tanggal display
