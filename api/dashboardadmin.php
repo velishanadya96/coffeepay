@@ -463,16 +463,15 @@ $produk_list = mysqli_query($koneksi, $query);
       
       <div class="admin-grid-top">
         
-        <form class="form-container" id="formProduk" action="tambah_produk.php" method="POST" enctype="multipart/form-data">
-          <div class="photo-upload-box">
-            <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-              <rect x="3" y="3" width="18" height="18" rx="3"/>
-              <circle cx="8.5" cy="8.5" r="1.5"/>
-              <polyline points="21 15 16 10 5 21"/>
-            </svg>
-            <span>Klik untuk<br/>upload foto</span>
-            <img id="previewFoto" src="" style="display: none;" />
-            <input type="file" name="foto" accept="image/*" onchange="previewImage(event)" />
+        <form class="form-container" id="formProduk" action="/api/tambah_produk.php" method="POST" >
+                    <div style="display:flex;flex-direction:column;gap:8px;width:100%;justify-content:center;">
+            <div id="previewBox" style="width:120px;height:120px;background:rgba(255,255,255,0.03);border:1px dashed rgba(255,255,255,0.15);border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <img id="previewFoto" src="" style="width:100%;height:100%;object-fit:cover;display:none;" />
+              <svg id="previewIcon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="width:32px;height:32px;color:#a594bd;opacity:0.3;"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </div>
+            <input type="hidden" name="foto" id="fotoInput" value="default.png" />
+            <input type="url" placeholder="URL foto (opsional)" class="form-control" style="font-size:11px;" oninput="previewUrl(this.value)" />
+            <span style="font-size:10px;color:#a594bd;opacity:0.6;">Paste URL gambar dari internet</span>
           </div>
 
           <div class="form-inputs">
@@ -530,7 +529,7 @@ $produk_list = mysqli_query($koneksi, $query);
         <div style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; padding: 12px; display: flex; flex-direction: column; gap: 10px;">
           <div style="width: 100%; aspect-ratio: 1; background: rgba(255,255,255,0.03); border-radius: 10px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
             <?php if ($p['foto'] && $p['foto'] !== 'default.png'): ?>
-              <img src="uploads/<?= htmlspecialchars($p['foto']) ?>" style="width:100%; height:100%; object-fit:cover;" />
+              <img src="<?= htmlspecialchars($p['foto']) ?>" style="width:100%; height:100%; object-fit:cover;" />
             <?php else: ?>
               <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="width:32px;height:32px;color:#a594bd;opacity:0.3;"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
             <?php endif; ?>
@@ -569,6 +568,21 @@ $produk_list = mysqli_query($koneksi, $query);
           preview.style.display = 'block';
         }
         reader.readAsDataURL(input.files[0]);
+      }
+    }
+    function previewUrl(url) {
+      const preview = document.getElementById('previewFoto');
+      const icon    = document.getElementById('previewIcon');
+      const input   = document.getElementById('fotoInput');
+      if (url) {
+        preview.src = url;
+        preview.style.display = 'block';
+        if (icon) icon.style.display = 'none';
+        input.value = url;
+      } else {
+        preview.style.display = 'none';
+        if (icon) icon.style.display = '';
+        input.value = 'default.png';
       }
     }
   </script>
