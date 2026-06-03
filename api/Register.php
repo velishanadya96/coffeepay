@@ -162,11 +162,5 @@
     </form>
   </div>
 
-  <div class="bottom-images">
-    <div class="img-cup">
-      <img src="coffcroissant.png" alt="produk">
-    </div>
-  </div>
-
 </body>
 </html>

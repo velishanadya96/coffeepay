@@ -164,12 +164,6 @@
 </form>
   </div>
 
-  <div class="bottom-images">
-    <div class="img-cup">
-      <img src="coffcroissant.png" alt="produk">
-    </div>
-  </div>
-
   <script>
     function handleLogin() {
   const email    = document.querySelector('input[type="email"]').value.trim();

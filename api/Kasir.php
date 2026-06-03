@@ -597,7 +597,7 @@ $produk_json = json_encode([
       document.getElementById('btnBayar').textContent = 'Memproses...';
 
       try {
-        const res  = await fetch('transaksi_proses.php', {
+        const res  = await fetch('produk_proses.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)

@@ -8,14 +8,15 @@ if (!isset($_COOKIE['role']) || $_COOKIE['role'] !== 'admin') {
 
 // ── FILTER ──────────────────────────────────────────────────
 $filter_periode = $_GET['periode'] ?? 'hari_ini';
+$filter_tanggal = $_GET['tanggal'] ?? date('Y-m-d');
+$tanggal_display = date('d / m / Y', strtotime($filter_tanggal));
 
 $where = "";
 switch ($filter_periode) {
-    case 'hari_ini':   $where = "DATE(created_at) = CURDATE()"; break;
-    case 'minggu_ini': $where = "YEARWEEK(created_at,1) = YEARWEEK(CURDATE(),1)"; break;
-    case 'bulan_ini':  $where = "MONTH(created_at) = MONTH(CURDATE()) AND YEAR(created_at) = YEAR(CURDATE())"; break;
-    case 'semua':      $where = "1"; break;
-    default:           $where = "DATE(created_at) = CURDATE()";
+    case 'hari_ini': $where = "DATE(created_at) = '$filter_tanggal'"; break;
+    case 'minggu_ini': $where = "YEARWEEK(created_at,1) = YEARWEEK('$filter_tanggal',1)"; break;
+    case 'bulan_ini':  $where = "MONTH(created_at) = MONTH('$filter_tanggal') AND YEAR(created_at) = YEAR('$filter_tanggal')"; break;case 'semua':      $where = "1"; break;
+    default: $where = "DATE(created_at) = '$filter_tanggal'";
 }
 
 // ── METRIK RINGKASAN ───────────────────────────────────────
@@ -24,7 +25,7 @@ $row_total = mysqli_fetch_assoc($q_total);
 $total_pemasukan  = (int)($row_total['total_pemasukan'] ?? 0);
 $jml_transaksi    = (int)($row_total['jml_transaksi']  ?? 0);
 
-$q_produk = mysqli_query($koneksi, "SELECT SUM(td.qty) as total_item FROM transaksi t JOIN transaksi_detail td ON t.id = td.transaksi_id WHERE $where");
+$q_produk = mysqli_query($koneksi, "SELECT SUM(td.qty) as total_item FROM transaksi t JOIN detail_transaksi td ON t.id = td.transaksi_id WHERE $where");
 $row_produk = mysqli_fetch_assoc($q_produk);
 $total_produk_terjual = (int)($row_produk['total_item'] ?? 0);
 
@@ -54,14 +55,14 @@ if ($filter_periode === 'hari_ini') {
 $q_recent = mysqli_query($koneksi,
     "SELECT t.*, GROUP_CONCAT(td.nama_produk, ' x', td.qty ORDER BY td.id SEPARATOR ', ') as items
      FROM transaksi t
-     LEFT JOIN transaksi_detail td ON t.id = td.transaksi_id
+     LEFT JOIN detail_transaksi td ON t.id = td.transaksi_id
      WHERE $where GROUP BY t.id ORDER BY t.created_at DESC LIMIT 5");
 
 // ── TABEL SEMUA TRANSAKSI (untuk export CSV) ───────────────
 $q_all = mysqli_query($koneksi,
     "SELECT t.*, GROUP_CONCAT(td.nama_produk, ' x', td.qty ORDER BY td.id SEPARATOR ' | ') as items
      FROM transaksi t
-     LEFT JOIN transaksi_detail td ON t.id = td.transaksi_id
+     LEFT JOIN detail_transaksi td ON t.id = td.transaksi_id
      WHERE $where GROUP BY t.id ORDER BY t.created_at DESC");
 
 // Tanggal display
@@ -297,9 +298,13 @@ $tanggal_display = date('d / m / Y');
         <h1>Laporan Hari Ini</h1>
       </div>
       <div class="topbar-right">
-        <div class="date-pill">
+        <div class="date-pill" style="cursor:pointer;" onclick="document.getElementById('inputTanggal').showPicker()">
           <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          <?= $tanggal_display ?>
+          <span id="labelTanggal"><?= $tanggal_display ?></span>
+          <input type="date" id="inputTanggal" name="tanggal"
+            value="<?= date('Y-m-d') ?>"
+            style="position:absolute;opacity:0;width:0;height:0;pointer-events:none;"
+            onchange="gantiTanggal(this.value)">
         </div>
         <form method="GET">
           <select name="periode" class="select-periode" onchange="this.form.submit()">
@@ -393,6 +398,18 @@ $tanggal_display = date('d / m / Y');
   </div>
 
   <script>
+    function gantiTanggal(val) {
+      if (!val) return;
+      const d = new Date(val);
+      const label = d.toLocaleDateString('id-ID', { day:'2-digit', month:'2-digit', year:'numeric' });
+      document.getElementById('labelTanggal').textContent = label.replace(/\//g, ' / ');
+
+      // Kirim ke server untuk filter data berdasarkan tanggal yang dipilih
+      const url = new URL(window.location.href);
+      url.searchParams.set('tanggal', val);
+      window.location.href = url.toString();
+    }
+
     // ── GRAFIK ────────────────────────────────────────────
     const labels = <?= json_encode($grafik_label) ?>;
     const values = <?= json_encode($grafik_data) ?>;
