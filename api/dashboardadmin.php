@@ -485,8 +485,8 @@ $produk_list = mysqli_query($koneksi, $query);
             <div class="form-group">
               <select name="kategori" class="form-control" required>
                 <option value="" disabled selected style="color: rgba(255,255,255,0.25);">Kategori</option>
-                <option value="minuman">Minuman-Coffee</option>
-                <option value="makanan">Makanan-Dessert</option>
+                <option value="minuman">Minuman</option>
+                <option value="makanan">Makanan</option>
               </select>
             </div>
             
