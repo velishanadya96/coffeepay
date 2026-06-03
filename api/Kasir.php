@@ -688,7 +688,13 @@ $produk_json = json_encode([
     }
 
     document.getElementById('btnClear').addEventListener('click', () => {
-      if (pesanan.length > 0 && confirm('Hapus semua pesanan?')) { pesanan = []; renderPesanan(); }
+      if (pesanan.length > 0 && confirm('Hapus semua pesanan?')) {
+        pesanan = [];
+        document.getElementById('inputUang').value = '';
+        document.getElementById('valKembalian').textContent = '0';
+        document.getElementById('valKembalian').style.color = 'var(--green)';
+        renderPesanan();
+      }
     });
 
     renderProduk();
