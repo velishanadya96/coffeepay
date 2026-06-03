@@ -61,7 +61,7 @@ try {
         $qty           = intval($item['qty']);
         $subtotal_item = $harga * $qty;
 
-        $q2 = "INSERT INTO transaksi_detail 
+        $q2 = "INSERT INTO detail_transaksi
                 (transaksi_id, produk_id, nama_produk, harga, qty, subtotal_item)
                 VALUES ($transaksi_id, $produk_id, '$nama_produk', $harga, $qty, $subtotal_item)";
         if (!mysqli_query($koneksi, $q2)) throw new Exception(mysqli_error($koneksi));
