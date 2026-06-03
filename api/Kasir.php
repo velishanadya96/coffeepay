@@ -693,6 +693,8 @@ $produk_json = json_encode([
       if (pesanan.length > 0 && confirm('Hapus semua pesanan?')) {
         pesanan = [];
         document.getElementById('inputUang').value = '';
+        document.getElementById('inputNama').value      = ''; // ← tambah
+        document.getElementById('inputCatatan').value   = ''; // ← tambah
         document.getElementById('valKembalian').textContent = '0';
         document.getElementById('valKembalian').style.color = 'var(--green)';
         renderPesanan();
