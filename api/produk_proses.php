@@ -1,13 +1,25 @@
 <?php
-session_start();
 include 'koneksi.php';
 
-if (!isset($_SESSION['role'])) {
+// Cek login via cookie (bukan session)
+if (!isset($_COOKIE['role'])) {
     http_response_code(401);
+    header('Content-Type: application/json');
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
     exit;
 }
 
+// ── HAPUS PRODUK (GET request dari link ?hapus=ID) ──────────
+if (isset($_GET['hapus']) && $_COOKIE['role'] === 'admin') {
+    $id = intval($_GET['hapus']);
+    if ($id > 0) {
+        mysqli_query($koneksi, "DELETE FROM produk WHERE id = $id");
+    }
+    header("Location: /api/dashboardadmin.php");
+    exit;
+}
+
+// ── SIMPAN TRANSAKSI (POST JSON dari Kasir) ─────────────────
 header('Content-Type: application/json');
 
 $input = json_decode(file_get_contents('php://input'), true);
@@ -16,7 +28,7 @@ if (!$input || empty($input['pesanan'])) {
     exit;
 }
 
-// Generate kode unik TX-XXXXX
+// Generate kode TX-XXXXX
 $kode_query = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM transaksi");
 $kode_row   = mysqli_fetch_assoc($kode_query);
 $kode       = 'TX-' . str_pad($kode_row['total'] + 1, 5, '0', STR_PAD_LEFT);
@@ -31,11 +43,9 @@ $kembalian      = intval($input['kembalian']);
 $metode         = in_array($input['metode'], ['tunai','qris']) ? $input['metode'] : 'tunai';
 $kasir          = mysqli_real_escape_string($koneksi, $input['kasir'] ?? '');
 
-// Mulai transaksi MySQL
 mysqli_begin_transaction($koneksi);
 
 try {
-    // Insert header transaksi
     $q1 = "INSERT INTO transaksi 
             (kode, nama_pelanggan, catatan, subtotal, diskon, pajak, total, uang_diberikan, kembalian, metode, kasir)
             VALUES ('$kode','$nama_pelanggan','$catatan',$subtotal,0,$pajak,$total,$uang,$kembalian,'$metode','$kasir')";
@@ -44,7 +54,6 @@ try {
 
     $transaksi_id = mysqli_insert_id($koneksi);
 
-    // Insert detail item
     foreach ($input['pesanan'] as $item) {
         $produk_id     = intval($item['id']);
         $nama_produk   = mysqli_real_escape_string($koneksi, $item['nama_produk']);
